@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&family=Noto+Sans+Lao:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf2f4;
+            --card-bg: #ffffff;
+            --text-main: #d63384;
+            --month-label: #ff85a1;
+            --accent: #ff4d6d;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* ลบสีฟ้าเวลาแตะบนมือถือ */
+        }
+
+        body {
+            font-family: 'Mali', 'Noto Sans Lao', cursive;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- Header Section --- */
+        .header-section {
+            text-align: center;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        h1 { 
+            font-size: 2.2rem; 
+            margin-bottom: 15px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: white;
+            color: var(--text-main);
+            border: 2px solid var(--text-main);
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .back-btn:hover {
+            background: var(--text-main);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* --- Responsive Grid --- */
+        .year-grid {
+            display: grid;
+            /* Desktop: 4 คอลัมน์ */
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            padding-bottom: 40px;
+        }
+
+        .month-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 8px 15px rgba(214, 51, 132, 0.1);
+            text-align: center;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .month-card:hover { 
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(214, 51, 132, 0.2); 
+        }
+
+        .photo-frame {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .photo-frame img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        /* --- Modal (Popup) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            align-items: center; 
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 30px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            animation: softPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes softPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -15px; 
+            right: -15px;
+            background: #ff4d6d;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 24px; 
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 3px solid white;
+        }
+
+        #modal-text { 
+            margin-top: 15px; 
+            line-height: 1.6; 
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        /* --- Mobile Responsive (Phone) --- */
+        @media (max-width: 768px) {
+            .year-grid { 
+                grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์สำหรับมือถือ */
+                gap: 12px; 
+            }
+            
+            h1 { font-size: 1.8rem; }
+            
+            .modal-content {
+                width: 90%;
+                padding: 15px;
+            }
+
+            #modal-text {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            body { padding: 10px; }
+            h1 { font-size: 1.5rem; }
+            .year-grid { gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h1>Our Love Year 🌸</h1>
+        <a href="index5.html" class="back-btn">⬅ ກັບຫນ້າກ່อน</a>
+    </div>
+
+    <div class="year-grid" id="yearGrid"></div>
+
+    <div id="loveModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <h2 id="modal-title" style="margin-top:0; color: var(--accent);">Month</h2>
+            <div style="width:100%; aspect-ratio:1/1; border-radius:20px; overflow:hidden; border: 4px solid #fff5f7;">
+                <img id="modal-img" src="" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <p id="modal-text"></p>
+        </div>
+    </div>
+
+    <script>
+        // ข้อมูลเดือน รูปภาพ และข้อความ
+       // ปรับส่วนข้อมูลใน <script> ของ index6.html
+const loveData = [
+    { month: "January", img: "imge/pic8.jpeg", note: "ເລີມຕົ້ນເດືອນແລກ ດ້ວຍຮອຍຍິ້ມຂອງເຈົ້າ ເບບີ້ 💜" },
+    { month: "February", img: "imge/pic12.jpeg", note: "ວາເລັນໄທນ໌ ດ້ວຍຮູບພາບຂອງເຈົ້າ ❤️" },
+    { month: "March", img: "imge/pic13.jpeg", note: "ความทรงจำดีๆ ในเดือนมีนาคม" },
+    { month: "April", img: "imge/pic14.jpeg", note: "เล่นน้ำสงกรานต์ด้วยกัน" },
+    { month: "May", img: "imge/pic15.jpeg", note: "เดือนพฤษภาคมที่แสนหวาน" },
+    { month: "June", img: "imge/pic16.jpeg", note: "ครึ่งปีแล้วนะที่อยู่ด้วยกัน" },
+    { month: "July", img: "imge/pic17.jpeg", note: "July Memory" },
+    { month: "August", img: "imge/pic18.jpeg", note: "August Memory" },
+    { month: "September", img: "imge/pic19.jpeg", note: "September Memory" },
+    { month: "October", img: "imge/pic20.jpeg", note: "October Memory" },
+    { month: "November", img: "imge/pic21.jpeg", note: "November Memory" },
+    { month: "December", img: "imge/pic22.jpeg", note: "สิ้นปีที่อบอุ่น" }
+];
+
+        const grid = document.getElementById('yearGrid');
+        const modal = document.getElementById('loveModal');
+
+        // สร้างการ์ดแสดงผล
+        loveData.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'month-card';
+            card.onclick = () => openModal(item);
+            card.innerHTML = `
+                <div class="photo-frame">
+                    <img src="${item.img}" onerror="this.src='https://via.placeholder.com/300/fdf2f4/d63384?text=${item.month}'">
+                </div>
+                <div style="font-weight:bold; font-size:0.9rem;">${item.month}</div>
+            `;
+            grid.appendChild(card);
+        });
+
+        function openModal(item) {
+            document.getElementById('modal-title').innerText = item.month;
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal-text').innerText = item.note;
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden"; // ล็อกการสโครลหน้าจอเมื่อเปิด modal
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // คืนค่าการสโครล
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) closeModal();
+        }
+    </script>
+</body>
+</html>

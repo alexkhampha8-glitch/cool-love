@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&family=Noto+Sans+Lao+Looped:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --heart-size: 250px;
+            --main-pink: #cd19cd;
+            --dark-pink: #f637a0;
+            --bg-color: #fce4ec;
+            --lao-font: 'Itim', 'Noto Sans Lao Looped', cursive, sans-serif;
+        }
+
+        @media (max-width: 480px) {
+            :root { --heart-size: 200px; }
+            h1 { font-size: 22px !important; }
+            .loading-text { font-size: 20px !important; }
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            font-family: var(--lao-font); 
+            overflow: hidden;
+        }
+
+        .lao-text {
+            font-family: var(--lao-font);
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            transition: opacity 0.6s ease;
+        }
+
+        .fade-out { opacity: 0; pointer-events: none; }
+
+        .heart {
+            background-color: var(--main-pink);
+            display: inline-block;
+            height: var(--heart-size);
+            width: var(--heart-size);
+            position: relative;
+            transform: rotate(-45deg);
+            box-shadow: 0 10px 40px rgba(255, 64, 129, 0.2);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .heart:before, .heart:after {
+            content: "";
+            background-color: var(--main-pink);
+            border-radius: 50%;
+            height: var(--heart-size);
+            width: var(--heart-size);
+            position: absolute;
+        }
+
+        .heart:before { top: calc(var(--heart-size) / -2); left: 0; }
+        .heart:after { left: calc(var(--heart-size) / 2); top: 0; }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            z-index: 10;
+        }
+
+        h1 { color: white; margin: 0; text-shadow: 1px 1px 5px rgba(0,0,0,0.1); font-size: 28px; }
+        p { color: #ffebee; margin: 10px 0 20px 0; font-size: 18px; }
+
+        .btn-start {
+            background-color: white;
+            color: var(--dark-pink);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: var(--lao-font);
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.2);
+            transition: 0.3s;
+        }
+
+        .btn-start:hover { transform: scale(1.1); background-color: #fff0f5; }
+
+        @keyframes pulse {
+            0% { transform: rotate(-45deg) scale(1); }
+            50% { transform: rotate(-45deg) scale(1.06); }
+            100% { transform: rotate(-45deg) scale(1); }
+        }
+
+        .loader-wrapper {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-color);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .heart-loader { display: flex; gap: 15px; }
+
+        .mini-heart {
+            width: 22px;
+            height: 22px;
+            background-color: var(--dark-pink);
+            position: relative;
+            transform: rotate(-45deg);
+            animation: heartBounce 0.8s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+
+        .mini-heart::before, .mini-heart::after {
+            content: "";
+            width: 22px;
+            height: 22px;
+            background-color: inherit;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .mini-heart::before { top: -11px; left: 0; }
+        .mini-heart::after { left: 11px; top: 0; }
+
+        .mini-heart:nth-child(2) { animation-delay: 0.2s; background-color: #ff85a2; }
+        .mini-heart:nth-child(3) { animation-delay: 0.4s; background-color: #f06292; }
+
+        @keyframes heartBounce {
+            from { transform: rotate(-45deg) translateY(0); }
+            to { transform: rotate(-45deg) translateY(-30px); }
+        }
+
+        .loading-text {
+            margin-top: 40px;
+            color: var(--dark-pink);
+            font-size: 24px; 
+            font-weight: bold;
+            text-shadow: 1px 1px 0px white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-content">
+        <div class="heart"></div>
+        <div class="content lao-text">
+            <h1>Happy Valentine!</h1>
+            <p>ມີຂອງຂວັນມາໃຫ້ຈ້າ</p>
+            <button class="btn-start" onclick="goToNextPage('index2.html')">ກົດເບິ່ງເລີຍ!</button>
+        </div>
+    </div>
+
+    <div class="loader-wrapper" id="loader">
+        <div class="heart-loader">
+            <div class="mini-heart"></div>
+            <div class="mini-heart"></div>
+            <div class="mini-heart"></div>
+        </div>
+        <div class="loading-text lao-text">ຫຼໍແປບກຳລັງໂຫຼດຢູ່ຈ້າ...</div>
+    </div>
+
+    <script>
+        function goToNextPage(url) {
+            document.getElementById('main-content').classList.add('fade-out');
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'flex';
+            }, 400);
+            setTimeout(() => {
+                window.location.href = url;
+            }, 2800); 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine💜 - Song For You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&family=Noto+Sans+Lao:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #ffccd5;
+            --accent-purple: #9d4edd;
+        }
+
+        body {
+            font-family: 'Mali', 'Noto Sans Lao', sans-serif;
+            background: linear-gradient(135deg, #fff5f6 0%, #ffccd5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #444;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.2);
+            max-width: 400px;
+            width: 85%;
+            z-index: 10;
+            border: 2px solid white;
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 3px solid white;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: none;
+        }
+
+        .song-title {
+            font-weight: bold;
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .artist {
+            color: #777;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            line-height: 1.7;
+            color: #555;
+            margin: 15px 0;
+            font-size: 16px;
+            font-family: 'Noto Sans Lao', sans-serif;
+        }
+
+        .btn-next {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+            font-weight: bold;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            background-color: var(--accent-purple);
+        }
+
+        /* Animation ຫົວໃຈລອຍ */
+        .floating-element {
+            position: fixed;
+            user-select: none;
+            pointer-events: none;
+            animation: floatUp linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎶 ມອບເພງນີ້ໃຫ້ຄົນພິເສດຂອງຂ້ອຍ</h1>
+
+    <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/n5Il-STC6KU" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div class="song-info">
+        <div class="song-title">ຄູ່ກັນ (For You)</div>
+        <div class="artist">COCKTAIL Feat. Q Flure</div>
+    </div>
+
+    <div class="message">
+        "ໃນຫົວໃຈມີແຕ່ເຈົ້າຄົນດຽວ... <br>
+        ບໍ່ວ່າຈະເກີດຫຍັງຂື້ນ ຂ້ອຍກໍຈະຮັກເຈົ້າຄືເກົ່າ <br>
+        <span >ຂອບໃຈທີ່ຢູ່ຄຽງຂ້າງກັນເດີ້ ແອວມອນຍາກກິນແຊວມອນ</span>"
+    </div>
+
+    <a href="index3.html" class="btn-next">ກັບໄປໜ້າເມນູ→</a>
+</div>
+
+<script>
+    function createFloatingElement() {
+        const element = document.createElement('div');
+        element.classList.add('floating-element');
+        const icons = ['❤️', '💖', '✨', '🌸', '💜', '🍣', '🍫'];
+        element.innerText = icons[Math.floor(Math.random() * icons.length)];
+        element.style.left = Math.random() * 100 + "vw";
+        element.style.fontSize = Math.random() * 15 + 15 + "px";
+        const duration = Math.random() * 4 + 6; 
+        element.style.animationDuration = duration + "s";
+        document.body.appendChild(element);
+        setTimeout(() => { element.remove(); }, duration * 1000);
+    }
+    setInterval(createFloatingElement, 450);
+</script>
+
+</body>
+</html>
