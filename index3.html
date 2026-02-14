@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Valentine💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --bg-color: #fff0f3;
+            --text-color: #d63384;
+            --card-bg: #ffffff;
+            --accent-color: #ffe4e8;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Mali', cursive;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 40px 20px;
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 10px; }
+
+        .subtitle { 
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 30px;
+            animation: heartbeat 2s infinite ease-in-out;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px 10px;
+            border-radius: 24px;
+            box-shadow: 0 8px 15px rgba(214, 51, 132, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .card:active {
+            transform: scale(0.92);
+            background-color: var(--accent-color);
+        }
+
+        .icon { 
+            font-size: 40px; 
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
+        }
+
+        .card h3 { margin: 5px 0; font-size: 1.1rem; }
+        .card p { font-size: 0.8rem; margin: 0; color: #b05a7e; }
+
+        .flower {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 1;
+            will-change: transform;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @media (max-width: 320px) {
+            .grid { gap: 10px; }
+            .icon { font-size: 30px; }
+            .card h3 { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Menu of Our Love</h1>
+    <span class="subtitle">♡ Together Forever ♡</span>
+
+    <div class="grid">
+        <div class="card" onclick="location.href='index4.html'">
+            <div class="icon">📸</div>
+            <h3>Memories</h3>
+            <p>Our moments ❤️</p>
+        </div>
+        <div class="card" onclick="location.href='index5.html'">
+            <div class="icon">📅</div>
+            <h3>Calendar</h3>
+            <p>Counting days ❤️</p>
+        </div>
+        <div class="card" onclick="location.href='index9.html'">
+            <div class="icon">🧩</div>
+            <h3>Game Love</h3>
+            <p>Missing you ❤️</p>
+        </div>
+        <div class="card" onclick="location.href='index11.html'">
+            <div class="icon">💌</div>
+            <h3>Love Notes</h3>
+            <p>From my heart ❤️</p>
+        </div>
+        <div class="card" onclick="location.href='index7.html'">
+            <div class="icon">🎵</div>
+            <h3>Our Song</h3>
+            <p>Love melody ❤️</p>
+        </div>
+        <div class="card" onclick="location.href='index8.html'">
+            <div class="icon">🔖</div>
+            <h3>Love Spin</h3>
+            <p>Random fun ❤️</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function createFlower() {
+        if (document.querySelectorAll('.flower').length > 20) return;
+
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        const size = Math.random() * 10 + 10 + "px";
+        flower.style.width = size;
+        flower.style.height = size;
+        flower.style.borderRadius = "50% 0 50% 50%";
+        flower.style.left = Math.random() * 100 + "vw";
+        
+        const duration = Math.random() * 4 + 6 + "s";
+        flower.style.animationDuration = duration;
+
+        const colors = ['#ffcdd2', '#f8bbd0', '#f48fb1', '#ffecf1'];
+        flower.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        document.body.appendChild(flower);
+        setTimeout(() => flower.remove(), 10000);
+    }
+    setInterval(createFlower, 800);
+</script>
+
+</body>
+</html>

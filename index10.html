@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Memory Love 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&family=Noto+Sans+Lao:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --primary-pink: #ffb7c5; --bg-color: #fff0f3; --text-color: #d63384; --card-back: #ff85a2; }
+        body { font-family: 'Mali', 'Noto Sans Lao', cursive; background-color: var(--bg-color); margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: var(--text-color); padding: 20px; overflow-x: hidden; }
+        
+        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 360px; margin-top: 10px; }
+        .memory-card { aspect-ratio: 3/4; position: relative; transform-style: preserve-3d; transition: transform 0.5s; cursor: pointer; }
+        .memory-card.flip { transform: rotateY(180deg); }
+        .front, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; border: 2px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .front { background-color: white; transform: rotateY(180deg); background-size: cover; background-position: center; }
+        .back { background-color: var(--card-back); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; }
+        .back::after { content: "❤️"; }
+
+        .btn { background: white; border: 2px solid var(--primary-pink); color: var(--text-color); padding: 10px 25px; border-radius: 50px; font-weight: bold; text-decoration: none; cursor: pointer; margin: 10px 5px; display: inline-block; transition: 0.3s; }
+        .btn:active { transform: scale(0.95); }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 30px; border-radius: 30px; text-align: center; width: 85%; max-width: 320px; animation: pop 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.27); }
+        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <h1 style="margin-bottom: 5px;">Memory Love 💖</h1>
+    <p style="margin: 0 0 15px 0; font-size: 0.9rem;">ຊອກຫາຮູບຄູ່ຂອງເຮົາໃຫ້ຄົບເດີ້!</p>
+
+    <div style="background: white; padding: 8px 20px; border-radius: 20px; margin-bottom: 15px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        ⏱️ <span id="timer">0</span> ວິ | 🖱️ <span id="moves">0</span> ຄັ້ງ
+    </div>
+
+    <div class="game-grid" id="gameGrid"></div>
+
+    <div style="margin-top: 15px;">
+        <button class="btn" onclick="resetGame()">ຫຼິ້ນໃໝ່</button>
+        <a href="index3.html" class="btn">ກັບໜ້າຫຼັກ</a>
+    </div>
+
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <h2 style="color: var(--accent-pink)">ເກັ່ງທີ່ສຸດເລີຍ! 😍</h2>
+            <p>ໃຊ້ເວລາໄປ: <b><span id="finalTime">0</span> ວິນາທີ</b></p>
+            <p>ກົດທັງໝົດ: <b><span id="finalMoves">0</span> ຄັ້ງ</b></p>
+            <button class="btn" onclick="closeModal()" style="background: var(--primary-pink); color: white; border: none;">ຫຼິ້ນອີກຮອບ</button>
+        </div>
+    </div>
+
+    <script>
+        const images = ['imge/pic7.jpeg','imge/pic2.jpeg','imge/pic3.jpeg','imge/pic4.jpeg','imge/pic5.jpeg','imge/pic6.jpeg'];
+        let cards = [...images, ...images];
+        let flippedCards = [], matchedCount = 0, lockBoard = false, moves = 0, seconds = 0, timerInterval = null, gameStarted = false;
+
+        function createBoard() {
+            const gameGrid = document.getElementById('gameGrid');
+            gameGrid.innerHTML = '';
+            cards.sort(() => Math.random() - 0.5).forEach((img) => {
+                const card = document.createElement('div');
+                card.classList.add('memory-card');
+                card.dataset.name = img;
+                card.innerHTML = `<div class="front" style="background-image: url('${img}')"></div><div class="back"></div>`;
+                card.addEventListener('click', flipCard);
+                gameGrid.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            if (lockBoard || this === flippedCards[0]) return;
+            if (!gameStarted) {
+                gameStarted = true;
+                timerInterval = setInterval(() => { seconds++; document.getElementById('timer').innerText = seconds; }, 1000);
+            }
+            this.classList.add('flip');
+            flippedCards.push(this);
+            if (flippedCards.length === 2) {
+                moves++; document.getElementById('moves').innerText = moves;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const isMatch = flippedCards[0].dataset.name === flippedCards[1].dataset.name;
+            if (isMatch) {
+                matchedCount += 2; flippedCards = [];
+                if (matchedCount === cards.length) { clearInterval(timerInterval); winEffect(); }
+            } else {
+                lockBoard = true;
+                setTimeout(() => { flippedCards.forEach(c => c.classList.remove('flip')); flippedCards = []; lockBoard = false; }, 800);
+            }
+        }
+
+        function winEffect() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            document.getElementById('finalTime').innerText = seconds;
+            document.getElementById('finalMoves').innerText = moves;
+            document.getElementById('winModal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('winModal').style.display = 'none'; resetGame(); }
+        function resetGame() { clearInterval(timerInterval); seconds = 0; moves = 0; gameStarted = false; matchedCount = 0; document.getElementById('timer').innerText = "0"; document.getElementById('moves').innerText = "0"; createBoard(); }
+        
+        createBoard();
+    </script>
+</body>
+</html>

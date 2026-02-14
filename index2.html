@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Valentine💜</title>
+    <style>
+        /* --- พื้นฐานและการจัดวางหลัก --- */
+        body {
+            background-color: #fce4ec;
+             font-family: 'Noto Sans Lao', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden; /* ป้องกันการเลื่อนซ้ายขวาที่น่ารำคาญ */
+        }
+
+        #lock-screen, #menu-screen {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #lock-screen.active, #menu-screen.active {
+            display: flex;
+        }
+
+        /* --- ตัวจัดการ Layout (พระเอกของงานนี้) --- */
+        .lock-container {
+            display: flex;
+            flex-direction: row; /* คอมพิวเตอร์: วางซ้าย-ขวา */
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            z-index: 10;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* --- Polaroid Style (Width 100% / Auto) --- */
+        .polaroid {
+            background: white;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            text-align: center;
+            transition: transform 0.3s ease;
+            width: 100%;
+            max-width: 350px; /* คุมขนาดสูงสุดบนคอม */
+        }
+
+        .polaroid img {
+            width: 100%; /* รูปขยายตามกรอบ */
+            height: auto; /* รักษาสัดส่วนรูป */
+            display: block;
+            border: 1px solid #eee;
+        }
+
+        .polaroid p {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #ff80ab;
+            font-weight: bold;
+        }
+
+        /* --- Pin Pad --- */
+        .pin-pad {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 25px;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 280px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        #pin-display {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 1.8rem;
+            letter-spacing: 5px;
+            margin: 15px 0;
+            color: #ff80ab;
+            min-height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #f8bbd0;
+        }
+
+        .numbers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+          
+        }
+
+        .numbers button {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* ทำให้ปุ่มเป็นวงกลมเป๊ะๆ */
+            border-radius: 50%;
+            border: none;
+            background: #f8bbd0;
+            font-weight: bold;
+            color: #880e4f;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+
+        .numbers button:active {
+            transform: scale(0.9);
+            background: #f48fb1;
+        }
+
+        /* --- Responsive Media Query (สำหรับมือถือ) --- */
+        @media (max-width: 768px) {
+            .lock-container {
+                flex-direction: column; /* มือถือ: สลับเป็น บน-ล่าง */
+                gap: 30px;
+            }
+
+            .polaroid {
+                max-width: 280px; /* เล็กลงหน่อยบนมือถือ */
+                transform: rotate(0deg); /* ไม่ต้องเอียงเพื่อประหยัดที่ */
+            }
+
+            .pin-pad {
+                max-width: 250px;
+            }
+            
+            h1 { font-size: 2rem !important; }
+        }
+
+        /* --- Heart Effect --- */
+        .heart {
+            position: fixed;
+            bottom: -10%;
+            color: #ff4081;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .action-button {
+            background-color: #ff80ab;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 128, 171, 0.4);
+            transition: all 0.3s ease;
+        }
+
+      
+/* สำหรับหน้าจอที่มีความกว้างไม่เกิน 600px (มือถือ) */
+@media (max-width: 600px) {
+    /* 1. ปรับขนาดตัวอักษรให้เล็กลงเล็กน้อยเพื่อให้ไม่ล้น */
+    h1 {
+        font-size: 1.8rem !important;
+    }
+    
+    /* 2. หน้า PIN: ปรับให้รูป Polaroid อยู่ด้านบน และปุ่มกดอยู่ด้านล่าง */
+    .lock-container {
+        flex-direction: column !important; /* เปลี่ยนจากแนวนอนเป็นแนวตั้ง */
+        gap: 20px !important;
+    }
+
+    /* 3. ปรับขนาด Polaroid ให้พอดีความกว้างหน้าจอ */
+    .polaroid {
+        width: 80% !important;
+        max-width: 250px;
+        transform: rotate(0deg) !important; /* ยกเลิกการเอียงเพื่อให้ดูง่ายบนมือถือ */
+    }
+
+    /* 4. ปรับขนาดปุ่มกดรหัส (PIN Pad) */
+    .pin-pad {
+        width: 90% !important;
+        padding: 15px !important;
+    }
+
+    .numbers button {
+        font-size: 1rem !important;
+        padding: 10px !important;
+    }
+    
+    /* 5. ปรับปุ่ม Action ให้ยาวขึ้นเพื่อให้กดง่ายด้วยนิ้วโป้ง */
+    .action-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
+    </style>
+</head>
+<body>
+
+<section id="lock-screen" class="active">
+    <div class="lock-container">
+        <div class="polaroid">
+            <img src="imge/pic8.jpeg" alt="Our Photo">
+            <p>Love you <3</p>
+            <p style="font-size: 1.2rem;">☆*: .｡. o(≧▽≦)o .｡.:*☆</p>
+        </div>
+
+        <div class="pin-pad">
+            <h3 style="color: #444;  ">My Lock💖</h3>
+            <p style="color: #777; font-size: 0.8rem; font-family: 'Noto Sans Lao', sans-serif; font-family: var(--lao-font);
+            font-weight: bold;
+            font-size: 18px; color: #ff80ab;">ກະລຸນາໃສ່ລະຫັດຜ່ານ</p>
+            <div id="pin-display">-------</div>
+            <div class="numbers">
+                <button onclick="inputPin(1)" >1</button>
+                <button onclick="inputPin(2)">2</button>
+                <button onclick="inputPin(3)">3</button>
+                <button onclick="inputPin(4)">4</button>
+                <button onclick="inputPin(5)">5</button>
+                <button onclick="inputPin(6)">6</button>
+                <button onclick="inputPin(7)">7</button>
+                <button onclick="inputPin(8)">8</button>
+                <button onclick="inputPin(9)">9</button>
+                <button onclick="deletePin()">⌫</button>
+                <button onclick="inputPin(0)">0</button>
+                <button onclick="checkPin()">OK</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="menu-screen">
+    <div style="text-align: center;">
+        <h1 style="color: #ff80ab; font-size: 3rem; margin-bottom: 10px;font-family: 'Noto Sans Lao', sans-serif;">💜ຍິນດີຕ້ອມ ເບບີ້!💜</h1>
+        <p style="color: #880e4f; font-size: 1.2rem; margin-bottom: 30px;font-family: 'Noto Sans Lao', sans-serif;">ຂອງຂວັນຈາກອາເລັກເດັກດື້🐶</p>
+        <button onclick="goToNextPage()" class="action-button" style="font-family: 'Noto Sans Lao', sans-serif;">ເບີ່ງຂອງຂວັນ🎁</button>
+    </div>
+</section>
+
+<script>
+    let currentPin = "";
+    const correctPin = "2580852"; 
+
+    function inputPin(num) {
+        if (currentPin.length < 7) {
+            currentPin += num;
+            updateDisplay();
+        }
+    }
+
+    function deletePin() {
+        currentPin = currentPin.slice(0, -1);
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        const displayElement = document.getElementById("pin-display");
+        displayElement.innerText = currentPin === "" ? "-------" : currentPin;
+    }
+
+    function checkPin() {
+        if (currentPin === correctPin) {
+            for(let i=0; i<30; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+            setTimeout(() => {
+                document.getElementById('lock-screen').classList.remove('active');
+                document.getElementById('menu-screen').classList.add('active');
+            }, 1000);
+        } else {
+            alert("รหัสไม่ถูกต้องนะที่รัก!");
+            currentPin = "";
+            updateDisplay();
+        }
+    }
+
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️"; 
+        heart.style.left = Math.random() * 100 + "vw";
+        const size = Math.random() * 20 + 15 + "px";
+        heart.style.fontSize = size;
+        heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 4000);
+    }
+
+    setInterval(createHeart, 600);
+
+    function goToNextPage() {
+        window.location.href = "/index3.html"; 
+    }
+</script>
+
+</body>
+</html>
