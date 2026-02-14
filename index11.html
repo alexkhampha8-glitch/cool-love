@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --bg-color: #fff0f3;
+            --text-color: #d63384;
+            --line-color: #e0e0e0;
+            --margin-line: #ffacc5;
+        }
+
+        body {
+            font-family: 'Mali', cursive;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* เอฟเฟกต์กระดาษสมุด */
+        .paper {
+            background: #fff;
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 2em; /* ระยะห่างของบรรทัด */
+            width: 100%;
+            max-width: 500px;
+            min-height: 400px;
+            padding: 60px 40px 40px 60px; /* เว้นที่ให้เส้นแดงและรูเจาะ */
+            position: relative;
+            box-shadow: 10px 10px 0px rgba(214, 51, 132, 0.05), 
+                        0 10px 20px rgba(0,0,0,0.1);
+            border-radius: 2px;
+            animation: unfold 1s ease-out;
+            transform-origin: top;
+        }
+
+        /* เส้นแนวตั้งสีแดงด้านซ้าย */
+        .paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 45px;
+            height: 100%;
+            width: 2px;
+            background: var(--margin-line);
+            opacity: 0.6;
+        }
+
+        /* รูเจาะสมุด */
+        .holes {
+            position: absolute;
+            left: 15px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .hole {
+            width: 15px;
+            height: 15px;
+            background: var(--bg-color);
+            border-radius: 50%;
+            box-shadow: inset 2px 2px 2px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--text-color);
+            margin-top: 0;
+            font-size: 1.5rem;
+            line-height: 1.2;
+            margin-bottom: 0.8em;
+        }
+
+        #typing-text {
+            color: #444;
+            font-size: 1.1rem;
+            line-height: 2em; /* ให้ตรงกับพื้นหลังเส้นบรรทัด */
+            white-space: pre-wrap;
+        }
+
+        /* Cursor ກະພິບ */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2rem;
+            background: var(--text-color);
+            margin-left: 3px;
+            vertical-align: middle;
+            animation: blink 0.8s infinite;
+        }
+
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            padding: 10px 20px;
+            background: white;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-pink);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes unfold {
+            from { transform: rotateX(-90deg); opacity: 0; }
+            to { transform: rotateX(0deg); opacity: 1; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .paper { padding: 50px 25px 30px 45px; }
+            .paper::before { left: 35px; }
+            .hole { width: 10px; height: 10px; }
+            #typing-text { font-size: 1rem; }
+        }
+
+        /* style flower */
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="paper">
+        <div class="holes">
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+        </div>
+
+        <h2>Note to: Someone Special 🤍✨</h2>
+        <div id="typing-text"></div><span class="cursor"></span>
+    </div>
+
+    <a href="/index3.html" class="back-btn">← Back to Menu</a>
+
+<script>
+    
+    const text = `ເຖິງ ຄົນທີ່ພິເສດຂອງຂ້ອຍ...
+ມື້ນີ້ເມື່ອຍບໍ່? 
+ຍາກບອກເຈົ້າວ່າ...
+
+ຂອບໃຈທີ່ເຂົ້າມາເປັນຮອຍຍິ້ມໃຫ້ກັນສະເໝີ
+ຂ້ອຍຮັກເຈົ້າດ້ວຍຄວາມຕັ້ງໃຈ
+ຂ້ອຍຮັກເຈົ້າດ້ວຍໃຈບໍລິສຸດ
+ຂ້ອຍບໍ່ໄດ້ຫວັງແຄ່ຮ່າງກາຍຂອງເຈົ້າ
+ ແຕ່ຂ້ອຍຫວັງຈະດູແລເຈົ້າແລະ...
+ສ້າງອານາຄົດໄປກັບເຈົ້າ ເພາະເຈົ້າຄືຄົນທີ່ຂ້ອຍຮັກ
+ແລະເຈົ້າກໍ່ຍັງເປັນຄວາມສຸກຂອງຂ້ອຍ
+ທີ່ບໍ່ຍາກໃຫ້ຫາຍໄປໃສເລີຍ
+
+
+ຮັກເຈົ້າເດີ້ ແອວມອນ💐💜`;
+
+    let index = 0;
+    function typeWriter() {
+        if (index < text.length) {
+            document.getElementById('typing-text').textContent += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, 80); // ปรับให้ช้าลงนิดนึงเพื่อให้คนอ่านละเมียดละไม
+        }
+    }
+
+    window.onload = () => setTimeout(typeWriter, 1200);
+
+</script>
+
+</body>
+</html>

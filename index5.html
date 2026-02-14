@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Love Journey 💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&family=Noto+Sans+Lao:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --bg-color: #fff0f3;
+            --text-color: #d63384;
+            --accent-color: #ff4d6d;
+        }
+
+        body {
+            font-family: 'Mali', 'Noto Sans Lao', cursive;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            z-index: 10;
+        }
+
+        .header-section {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 40px;
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-link {
+            display: inline-block;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .profile-link:hover { transform: scale(1.05); }
+
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 6px solid var(--primary-pink);
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .timer-item {
+            background: #fffafa;
+            padding: 12px 5px;
+            border-radius: 15px;
+            border: 1px solid #ffe4e8;
+        }
+
+        .timer-item span {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .timer-item p { margin: 0; font-size: 0.7rem; opacity: 0.6; }
+
+        .btn-back {
+            background: var(--primary-pink);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            display: inline-block;
+            transition: 0.3s ease;
+            font-family: 'Noto Sans Lao', sans-serif;
+            margin-top: 10px;
+        }
+
+        .btn-back:hover { background: var(--accent-color); transform: translateY(-3px); }
+
+        .flower {
+            position: absolute;
+            top: -20px;
+            border-radius: 50% 0 50% 0; /* เปลี่ยนรูปทรงเป็นกลีบดอกไม้ */
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-section">
+            <a href="index6.html" class="profile-link">
+                <img src="imge/pic8.jpeg" alt="Couple" class="profile-img">
+            </a>
+            
+            <h2 style="margin: 10px 0;">Our Love Journey</h2>
+            <p style="opacity: 0.8; font-size: 1.1rem; margin-bottom: 20px;">ມື້ຄົບຮອບ ວັນທີ 1 ທັນວາ 2025</p>
+            
+            <div class="timer-grid">
+                <div class="timer-item"><span id="days">0</span><p>Days</p></div>
+                <div class="timer-item"><span id="hours">0</span><p>Hours</p></div>
+                <div class="timer-item"><span id="minutes">0</span><p>Mins</p></div>
+                <div class="timer-item"><span id="seconds">0</span><p>Secs</p></div>
+            </div>
+            
+            <p style="font-weight: bold; font-size: 1.1rem;">ເພື່ອໃຜບາງຄົນລືມອ່ະ😤💜</p>
+
+            <div class="btn-back-container">
+                <a href="index3.html" class="btn-back">ກັບຫນ້າເມນູຫຼັກ</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // วันที่เริ่มคบกัน
+        const startDate = new Date("2025-12-01T00:00:00");
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("days").innerText = d;
+            document.getElementById("hours").innerText = h;
+            document.getElementById("minutes").innerText = m;
+            document.getElementById("seconds").innerText = s;
+        }
+        
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // เอฟเฟกต์ดอกไม้ร่วง
+        function createFlower() {
+            const flower = document.createElement('div');
+            flower.classList.add('flower');
+            const size = Math.random() * 15 + 10;
+            flower.style.width = size + "px";
+            flower.style.height = size + "px";
+            flower.style.left = Math.random() * 100 + "vw";
+            flower.style.animationDuration = Math.random() * 3 + 4 + "s";
+            flower.style.backgroundColor = ['#ffcdd2', '#f8bbd0', '#f48fb1', '#e1bee7'][Math.floor(Math.random() * 4)];
+            document.body.appendChild(flower);
+            setTimeout(() => flower.remove(), 7000);
+        }
+        setInterval(createFlower, 500);
+    </script>
+</body>
+</html>

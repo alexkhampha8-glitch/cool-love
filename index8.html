@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lucky Love Wheel 🎡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&family=Noto+Sans+Lao:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --bg-color: #fff0f3;
+            --text-color: #d63384;
+            --accent-red: #ff4d6d;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Noto Sans Lao', 'Mali', cursive;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        #menu-screen, #game-screen { width: 100%; }
+        #game-screen { display: none; }
+
+        .heart-icon {
+            font-size: 70px;
+            animation: heartbeat 1.2s infinite;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        h1 { font-size: 1.8rem; margin: 10px 0; text-shadow: 2px 2px white; }
+
+        .wheel-container {
+            position: relative;
+            width: 80vw;
+            height: 80vw;
+            max-width: 320px;
+            max-height: 320px;
+            margin: 20px auto;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 8px 30px rgba(214, 51, 132, 0.2);
+            border: 5px solid white;
+            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
+        }
+
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 40px;
+            background: var(--accent-red);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 20;
+        }
+
+        .btn {
+            background: var(--text-color);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Noto Sans Lao';
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+            width: 80%;
+            margin-top: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 3em;
+        }
+
+        .back-link {
+            margin-top: 15px;
+            display: block;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="menu-screen">
+        <div class="heart-icon">🎡</div>
+        <h1>ວົງລໍ້ສຸ່ມຮັກ</h1>
+        <p>ມາລອງສຸ່ມເບິ່ງດູວ່າ ຄືນນີ້ເຮົາຈະເຮັດຫຍັງກັນ?</p>
+        <button class="btn" onclick="showGame()">ເລີ່ມຫຼິ້ນເລີຍ!</button>
+        <a href="index3.html" class="back-link">📖 ກັບໄປໜ້າເມນູຫຼັກ</a>
+    </div>
+
+    <div id="game-screen">
+        <h1>ສຸ່ມເລີຍທີ່ຮັກ ❤️</h1>
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <canvas id="wheel"></canvas>
+        </div>
+        <button class="btn" id="spinBtn">ໝຸນເລີຍ!</button>
+        <div id="result">ພ້ອມແລ້ວບໍ່? ກົດໝຸນເລີຍ! 😊</div>
+        <a href="index3.html" class="back-link">🏠 ກັບໜ້າເມນູ</a>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('wheel');
+    const ctx = canvas.getContext('2d');
+    const spinBtn = document.getElementById('spinBtn');
+    const resultDiv = document.getElementById('result');
+    const menuScreen = document.getElementById('menu-screen');
+    const gameScreen = document.getElementById('game-screen');
+
+    const gifts = [
+        "ກອດກັນ 1ນາທີ🫂", "ຕາມໃຈ1ມື້👑", "ຫອມແກ້ມ1ບາດ💋", 
+        "ພາໄປກິນຂອງແຊບ🍦", "ນວດໄຫຼ່ 10 ນາທີ💆", "ເບິ່ງໜັງນຳກັນ🎬", 
+        "ບອກຮັກ3ຄັ້ງ🔊", "Special Night🫢🔞"
+    ];
+
+    const colors = ['#ffb7c5', '#f8bbd0', '#f48fb1', '#ffcdd2', '#ff8fa3', '#ff758f', '#ff5c8a', '#ff4d6d'];
+    let currentRotation = 0;
+    let isSpinning = false;
+
+    function showGame() {
+        menuScreen.style.display = 'none';
+        gameScreen.style.display = 'block';
+        setTimeout(setupCanvas, 50);
+    }
+
+    function setupCanvas() {
+        const size = document.querySelector('.wheel-container').clientWidth;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        ctx.scale(dpr, dpr);
+        drawWheel(size);
+    }
+
+    function drawWheel(size) {
+        const center = size / 2;
+        const radius = center - 5;
+        const sliceAngle = (2 * Math.PI) / gifts.length;
+
+        gifts.forEach((gift, i) => {
+            const angle = i * sliceAngle;
+            ctx.beginPath();
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.moveTo(center, center);
+            ctx.arc(center, center, radius, angle, angle + sliceAngle);
+            ctx.fill();
+
+            ctx.save();
+            ctx.translate(center, center);
+            ctx.rotate(angle + sliceAngle / 2);
+            ctx.textAlign = "right";
+            ctx.fillStyle = "white";
+            ctx.font = `bold ${size/18}px 'Noto Sans Lao'`;
+            ctx.fillText(gift.substring(0, 10), radius - 15, 5);
+            ctx.restore();
+        });
+    }
+
+    spinBtn.addEventListener('click', () => {
+        if (isSpinning) return;
+        isSpinning = true;
+        spinBtn.disabled = true;
+        resultDiv.innerText = "🌀 ກຳລັງໝຸນ...";
+
+        const rounds = 8 + Math.floor(Math.random() * 5);
+        const extraDegrees = Math.floor(Math.random() * 360);
+        currentRotation += (rounds * 360) + extraDegrees;
+        
+        canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+        setTimeout(() => {
+            isSpinning = false;
+            spinBtn.disabled = false;
+            
+            const actualRotation = currentRotation % 360;
+            const sliceSize = 360 / gifts.length;
+            const winningIndex = Math.floor(((360 - (actualRotation % 360) + 270) % 360) / sliceSize);
+            
+            resultDiv.innerHTML = `🎉 ຜົນທີ່ໄດ້ແມ່ນ 🎉<br><span style="font-size: 1.4rem; color: #ff4d6d;">${gifts[winningIndex]}</span>`;
+
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }, 4000);
+    });
+</script>
+
+</body>
+</html>
